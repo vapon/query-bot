@@ -1,7 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 const args = process.argv;
 
-// replace the value below with the Telegram token you receive from @BotFather
 if (!process.env.TOKEN) {
     console.log('setting token from args.');
     process.env.TOKEN = process.argv[2];
