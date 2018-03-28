@@ -32,11 +32,11 @@ module.exports = class KufarParser {
         for (var category of result.categories) {
             if (this.targetCategoryIds.includes(category.id)) {
                 var previous = this.previousResults[url].categories.find(function(value) {
-                    return (value.id === category.id && value.count !== category.count)
+                    return (value.id === category.id && value.count < category.count)
                 });
                 if (typeof previous !== 'undefined') {
                     var msg = JSON.stringify(result.suggest)
-                    callback(`${msg} ${category.name}::${category.count}::${previous.count}`)
+                    callback(`${msg} ${category.name}:${category.count}[${previous.count}]`)
                 }
             }
         }
