@@ -40,7 +40,6 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 setInterval(function() {
     if (kufarSubscribers.length > 0) {
         for (subscriber of kufarSubscribers) {
-            console.log("Search is On.")
             kufarParser.searchAll((message) => {
                 return bot.sendMessage(subscriber, message)
             })
