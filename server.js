@@ -7,7 +7,7 @@ if (!process.env.TOKEN) {
     process.env.TOKEN = process.argv[2]
 }
 
-const INTERVAL_MS = 600000;
+const INTERVAL_MS = 300000;
 const token = process.env.TOKEN;
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, { polling: true });
