@@ -40,7 +40,7 @@ class KufarParser {
                         return (value.id === category.id && value.count < category.count)
                     })
                     if (typeof previous !== 'undefined') {
-                        callback(`${query} ${category.name}:${category.count}[${previous.count}]`)
+                        callback(`${JSON.stringify(query)} ${category.name}:${category.count}[${previous.count}]`)
                     }
                 }
             }
