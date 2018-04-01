@@ -28,7 +28,7 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
         kufarSubscribers = kufarSubscribers.filter(value => value !== chatId)
         bot.sendMessage(chatId, 'unsubscribed from kufar searches')
     } else {
-        bot.sendMessage(chatId, 'bot is active ' + kufarSubscribers)
+        bot.sendMessage(chatId, 'bot is active', kufarSubscribers.join())
     }
 })
 
