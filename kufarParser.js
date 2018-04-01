@@ -1,19 +1,20 @@
 const request = require('request')
-const http = require('http')
 const qs = require('querystring')
+const urlParser = require('url')
 
-module.exports = class KufarParser {
+class KufarParser {
     constructor() {
         this.kufarPreSearchUrl = 'https://www.kufar.by/presearch.json'
-        this.searchQueries = ['плеер', 'аудиоплеер']
-        this.previousResults = {};
-        this.targetCategoryIds = ['5020', '4030']
+        this.searchQueries = ['плеер', 'аудиоплеер', 'гаи ссср', 'корпак']
+        this.previousResults = {}
+        // audiotechnica, antique, 'toys and books'
+        this.targetCategoryIds = ['5020', '4030', '12090']
     }
 
     search(url, callback) {
-        let that = this;
+        let that = this
         return request(url, function(err, resp, body) {
-            that.compareSearch(url, JSON.parse(body), callback);
+            that.compareSearch(url, JSON.parse(body), callback)
         })
     }
 
@@ -24,24 +25,30 @@ module.exports = class KufarParser {
     }
 
     compareSearch(url, result, callback) {
+        var url_parts = urlParser.parse(url, true)
+        var query = url_parts.query
         if (typeof this.previousResults[url] === 'undefined') {
-            console.log('Initial search')
-            this.previousResults[url] = result;
+            /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
+            console.warn('Initial search was performed for', query)
+            this.previousResults[url] = result
         }
 
-        for (var category of result.categories) {
-            if (this.targetCategoryIds.includes(category.id)) {
-                var previous = this.previousResults[url].categories.find(function(value) {
-                    return (value.id === category.id && value.count < category.count)
-                });
-                if (typeof previous !== 'undefined') {
-                    var msg = JSON.stringify(result.suggest)
-                    callback(`${msg} ${category.name}:${category.count}[${previous.count}]`)
+        if (result.categories.length !== 0) {
+            for (var category of result.categories) {
+                if (this.targetCategoryIds.includes(category.id)) {
+                    var previous = this.previousResults[url].categories.find(function(value) {
+                        return (value.id === category.id && value.count < category.count)
+                    })
+                    if (typeof previous !== 'undefined') {
+                        callback(`${query} ${category.name}:${category.count}[${previous.count}]`)
+                    }
                 }
             }
         }
 
         this.previousResults[url] = result
-        return;
+        return
     }
 }
+
+module.exports = KufarParser

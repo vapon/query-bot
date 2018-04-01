@@ -1,18 +1,21 @@
 {
-  "name": "query-bot",
-  "version": "0.0.1",
-  "description": "Simple Telegram Bot",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "telegram",
-    "bot"
-  ],
-  "author": "vapon",
-  "license": "ISC",
-  "dependencies": {
-    "node-telegram-bot-api": "^0.30.0"
-  }
+    "name": "query-bot",
+    "version": "0.0.1",
+    "description": "Simple Telegram Bot",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "telegram",
+        "bot"
+    ],
+    "author": "vapon",
+    "license": "ISC",
+    "dependencies": {
+        "node-telegram-bot-api": "^0.30.0"
+    },
+    "devDependencies": {
+        "eslint": "^4.19.1"
+    }
 }
