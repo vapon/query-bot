@@ -1,6 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api')
-    /*global process*/
-    /*eslint no-undef: "error"*/
+/*global process*/
+/*eslint no-undef: "error"*/
 const args = process.argv
 const KufarParser = require('./kufarParser')
 
@@ -12,7 +12,7 @@ if (!process.env.TOKEN) {
 
 const INTERVAL_MS = 60000
 const token = process.env.TOKEN
-    // Create a bot that uses 'polling' to fetch new updates
+// Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, { polling: true })
 let kufarSubscribers = []
 let kufarParser = new KufarParser()
@@ -28,7 +28,7 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
         kufarSubscribers = kufarSubscribers.filter(value => value !== chatId)
         bot.sendMessage(chatId, 'unsubscribed from kufar searches')
     } else {
-        bot.sendMessage(chatId, 'bot is active', kufarSubscribers.join())
+        bot.sendMessage(chatId, 'bot is active ' + kufarSubscribers.join())
     }
 })
 
