@@ -5,7 +5,7 @@ const urlParser = require('url')
 class KufarParser {
     constructor() {
         this.kufarPreSearchUrl = 'https://www.kufar.by/presearch.json'
-        this.searchQueries = ['плеер', 'аудиоплеер', 'гаи ссср', 'корпак']
+        this.searchQueries = ['кассетный плеер', 'cd плеер', 'panasonic sl', 'sony d', 'sony walkman', 'аудиоплеер', 'гаи ссср', 'корпак']
         this.previousResults = {}
         // audiotechnica, antique, 'toys and books'
         this.targetCategoryIds = ['5020', '4030', '12090']
