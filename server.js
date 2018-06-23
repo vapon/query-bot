@@ -10,6 +10,9 @@ const DEFAULT_QUERY_VALUES = ['panasonic sl', 'sony d']
 const DEFAULT_SEARCH_URL = 'https://www.kufar.by/presearch.json'
 const INTERVAL_MS = 60000
 
+const START_COMMAND = 'kufar start'
+const STOP_COMMAND = 'kufar stop'
+
 let token = ''
 if (process.env.TOKEN) {
     token = process.env.TOKEN
@@ -67,10 +70,10 @@ let kufarParser = new KufarParser(searchUrl, catIds, queryValues)
 bot.onText(/\/echo (.+)/, (msg, match) => {
     // const subject = match[1]
     const chatId = msg.chat.id
-    if (match[1] === 'kufar start') {
+    if (match[1] === START_COMMAND) {
         kufarSubscribers.push(chatId)
         bot.sendMessage(chatId, 'subscribed to kufar searches')
-    } else if (match[1] === 'kufar stop') {
+    } else if (match[1] === STOP_COMMAND) {
         kufarSubscribers = kufarSubscribers.filter(value => value !== chatId)
         bot.sendMessage(chatId, 'unsubscribed from kufar searches')
     } else {
