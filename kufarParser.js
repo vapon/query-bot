@@ -3,12 +3,11 @@ const qs = require('querystring')
 const urlParser = require('url')
 
 class KufarParser {
-    constructor() {
-        this.kufarPreSearchUrl = 'https://www.kufar.by/presearch.json'
-        this.searchQueries = ['кассетный плеер', 'cd плеер', 'panasonic sl', 'sony d', 'sony walkman', 'аудиоплеер', 'гаи ссср', 'корпак']
+    constructor(searchUrl, catIds, queryValues) {
+        this.kufarPreSearchUrl = searchUrl
+        this.searchQueries = queryValues
         this.previousResults = {}
-        // audiotechnica, antique, 'toys and books'
-        this.targetCategoryIds = ['5020', '4030', '12090']
+        this.targetCategoryIds = catIds
     }
 
     search(url, callback) {

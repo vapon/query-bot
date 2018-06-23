@@ -1,26 +1,57 @@
 const TelegramBot = require('node-telegram-bot-api')
-/*global process*/
-/*eslint no-undef: "error"*/
-const args = process.argv
+    /*global process*/
+    /*eslint no-undef: "error"*/
+const args = process.argv.slice(2)
 const KufarParser = require('./kufarParser')
+    // audiotechnica, antique, 'toys and books'
+const DEFAULT_TARGET_CAT_IDS = ['5020', '4030', '12090']
+    // ['кассетный плеер', 'cd плеер', 'panasonic sl', 'sony d', 'sony walkman', 'аудиоплеер', 'гаи ссср', 'корпак']
+const DEFAULT_QUERY_VALUES = ['panasonic sl', 'sony d']
+const DEFAULT_SEARCH_URL = 'https://www.kufar.by/presearch.json'
+const INTERVAL_MS = 60000
 
-if (!process.env.TOKEN) {
+let token = ''
+if (process.env.TOKEN) {
+    token = process.env.TOKEN
+} else {
     /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
     console.warn('setting token from args.')
-    process.env.TOKEN = args[2]
+    token = args[0]
 }
 
-const INTERVAL_MS = 60000
-const token = process.env.TOKEN
+let queryValues = DEFAULT_QUERY_VALUES
+if (process.env.QUERY_VALUES) {
+    queryValues = process.env.QUERY_VALUES
+} else {
+    /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
+    console.warn('no query values were defined.')
+}
+
+let catIds = DEFAULT_TARGET_CAT_IDS
+if (process.env.TARGET_CAT_IDS) {
+    catIds = process.env.TARGET_CAT_IDS
+} else {
+    /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
+    console.warn('no categories were defined. using defaults.')
+}
+
+let searchUrl = DEFAULT_SEARCH_URL
+if (process.env.SEARCH_URL) {
+    searchUrl = process.env.SEARCH_URL
+} else {
+    /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
+    console.warn('using default search url.')
+}
+
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, { polling: true })
 let kufarSubscribers = []
 
-if(process.env.DEFAULT_SUBSCRIBER_ID) {
+if (process.env.DEFAULT_SUBSCRIBER_ID) {
     kufarSubscribers.push(process.env.DEFAULT_SUBSCRIBER_ID)
 }
 
-let kufarParser = new KufarParser()
+let kufarParser = new KufarParser(searchUrl, catIds, queryValues)
 
 // Matches "/echo [whatever]. "
 bot.onText(/\/echo (.+)/, (msg, match) => {
