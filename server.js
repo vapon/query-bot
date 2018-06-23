@@ -21,7 +21,7 @@ if (process.env.TOKEN) {
 
 let queryValues = DEFAULT_QUERY_VALUES
 if (process.env.QUERY_VALUES) {
-    queryValues = process.env.QUERY_VALUES
+    queryValues = getValuesFromString(process.env.QUERY_VALUES)
 } else {
     /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
     console.warn('no query values were defined.')
@@ -29,7 +29,7 @@ if (process.env.QUERY_VALUES) {
 
 let catIds = DEFAULT_TARGET_CAT_IDS
 if (process.env.TARGET_CAT_IDS) {
-    catIds = process.env.TARGET_CAT_IDS
+    catIds = getValuesFromString(process.env.TARGET_CAT_IDS)
 } else {
     /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
     console.warn('no categories were defined. using defaults.')
@@ -49,6 +49,16 @@ let kufarSubscribers = []
 
 if (process.env.DEFAULT_SUBSCRIBER_ID) {
     kufarSubscribers.push(process.env.DEFAULT_SUBSCRIBER_ID)
+}
+
+function getValuesFromString(param) {
+    let parsed = []
+    if (!param) {
+        return parsed
+    }
+    param = param.replace(/'/g, '"')
+    parsed = JSON.parse(param)
+    return parsed
 }
 
 let kufarParser = new KufarParser(searchUrl, catIds, queryValues)
